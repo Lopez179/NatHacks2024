@@ -4,6 +4,7 @@ import time
 from reg_func import *
 from config import *
 import ICM_3D
+import ICM_3D_I
 
 
 if __name__ == "__main__":
@@ -16,7 +17,7 @@ if __name__ == "__main__":
   USER_BANK_0 = 0x00
   select_user_bank(bus, DEVICE_ADDRESS, REG_BANK_SEL, USER_BANK_0)
 
-  accel = ICM_3D(DEVICE_ADDRESS, 0x2D, 16.0 / 32768.0)
+  accel = ICM_3D_I(DEVICE_ADDRESS, 0x2D, 16.0 / 32768.0)
   gyro = ICM_3D(DEVICE_ADDRESS, 0x33, 2000.0 / 32768.0)
   
   while True:
