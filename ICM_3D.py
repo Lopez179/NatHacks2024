@@ -1,7 +1,7 @@
 from reg_func import *
 import time
 class ICM_3D:
-  def __init__(self, bus, dev_add, start_reg, reg_scaler):
+  def __init__(self, bus, dev_add, start_reg, sample_rate, reg_scaler):
     self.x_h_reg = start_reg
     self.x_l_reg = start_reg +1
     self.y_h_reg = start_reg +2
@@ -9,6 +9,7 @@ class ICM_3D:
     self.z_h_reg = start_reg +4
     self.z_l_reg = start_reg +5
     self.scaler = reg_scaler
+    self.samp_rate = sample_rate
     self.dev = dev_add
     self.bus = bus
 
@@ -36,7 +37,7 @@ class ICM_3D:
       self.y_tare += self.y
       self.z_tare += self.z
 
-      time.sleep(0.01)
+      time.sleep(self.samp_rate)
 
     self.x_tare //= num_samples
     self.y_tare //= num_samples
