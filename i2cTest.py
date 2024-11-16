@@ -103,8 +103,8 @@ def read_sensor_data():
   accel = ICM_3D(DEVICE_ADDRESS, 0x2D, 16.0 / 32768.0)
   gyro = ICM_3D(DEVICE_ADDRESS, 0x33, 2000.0 / 32768.0)
 
-  print(f"Accelerometer (g): X={accel.x:.2f}, Y={accel.y:.2f}, Z={accel.z:.2f}")
-  print(f"Gyroscope (dps): X={gyro.x:.2f}, Y={gyro.y:.2f}, Z={gyro.z:.2f}")
+  print(f"Accelerometer (g): {accel.print()}")
+  print(f"Gyroscope (dps): {gyro.print()}")
 
 
 # Run the configuration
