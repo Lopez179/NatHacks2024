@@ -7,4 +7,4 @@ class ICM_3D_I(ICM_3D):
   @property
   def x(self):
     something = super().x
-    print(f"Post super: {something}")
+    return f"Post super: {something}"
