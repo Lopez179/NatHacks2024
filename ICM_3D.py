@@ -42,6 +42,6 @@ class ICM_3D:
     self.y_tare //= num_samples
     self.z_tare //= num_samples
 
-  def print(self):
+  def __str__(self):
     return f"X={self.x:.2f}, Y={self.y:.2f}, Z={self.z:.2f}"
 
