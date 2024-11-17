@@ -1,7 +1,8 @@
 from reg_func import *
 import time
+from collections import deque
 class ICM_3D:
-  def __init__(self, bus, dev_add, start_reg, sample_rate, reg_scaler):
+  def __init__(self, bus, dev_add, start_reg, sample_rate, reg_scaler, window = 0x04, threshold = 3):
     self.x_h_reg = start_reg
     self.x_l_reg = start_reg +1
     self.y_h_reg = start_reg +2
@@ -13,19 +14,26 @@ class ICM_3D:
     self.dev = dev_add
     self.bus = bus
 
+    self.window = window
+    self.threshold = threshold
+    self.x_hist = deque(maxlen=self.window)
+    self.y_hist = deque(maxlen=self.window)
+    self.z_hist = deque(maxlen=self.window)
+
+
     self.calibrate()
 
   @property
   def x(self):
-    return self.scaler * (read_signed_16(self.bus, self.dev, self.x_h_reg, self.x_l_reg) - self.x_tare)
-  
+    return self.apply_filter(self.scaler * (read_signed_16(self.bus, self.dev, self.x_h_reg, self.x_l_reg) - self.x_tare), self.x_hist)
+     
   @property
   def y(self):
-    return self.scaler * (read_signed_16(self.bus, self.dev, self.y_h_reg, self.y_l_reg) - self.y_tare)
+    return self.apply_filter(self.scaler * (read_signed_16(self.bus, self.dev, self.y_h_reg, self.y_l_reg) - self.y_tare), self.y_hist)
     
   @property
   def z(self):
-    return self.scaler * (read_signed_16(self.bus, self.dev, self.z_h_reg, self.z_l_reg) - self.z_tare)
+    return self.apply_filter(self.scaler * (read_signed_16(self.bus, self.dev, self.z_h_reg, self.z_l_reg) - self.z_tare), self.z_hist)
     
   def calibrate(self):
     num_samples = 0x40
@@ -42,6 +50,12 @@ class ICM_3D:
     self.x_tare //= num_samples
     self.y_tare //= num_samples
     self.z_tare //= num_samples
+
+  def apply_filter(self, raw_value, history):
+    if abs(raw_value) <= self.threshold: raw_value = 0  
+    history.append(raw_value)
+
+    return sum(history) / len(history) if len(history) == self.window else raw_value
 
   def __str__(self):
     return f"X={self.x:.2f}, Y={self.y:.2f}, Z={self.z:.2f}"

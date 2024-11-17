@@ -13,30 +13,21 @@ class ICM_3D_I(ICM_3D):
 
   @property
   def _x(self):
-    return super().x
+    self._x_val += 0.5 * (self.x + self.x_val) * self.samp_rate
+    self.x_val = self.x
+    return self._x_val
   
   @property
   def _y(self):
-    return super().x
+    self._y_val += 0.5 * (self.y + self.y_val) * self.samp_rate
+    self.y_val = self.y
+    return self._y_val
   
   @property
   def _z(self):
-    return super().x
+    self._z_val += 0.5 * (self.z + self._z_val) * self.samp_rate
+    self.z_val = self.z
+    return self._z_val
 
-  @property
-  def x(self):
-    self.x_val += 0.5 * (self._x + self._x_val) * self.samp_rate
-    self._x_val = self._x
-    return self.x_val
-  
-  @property
-  def y(self):
-    self.y_val += 0.5 * (self._y + self._y_val) * self.samp_rate
-    self._y_val = self._y
-    return self.y_val
-  
-  @property
-  def z(self):
-    self.z_val += 0.5 * (self._z + self._z_val) * self.samp_rate
-    self._z_val = self._z
-    return self.z_val
+  def __str__(self):
+    return f"{super().__str__()}| _X={self._x:.2f}, _Y={self._y:.2f}, _Z={self._z:.2f}"
