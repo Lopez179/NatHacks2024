@@ -40,6 +40,7 @@ class ICM_3D:
     self.x_tare = 0
     self.y_tare = 0
     self.z_tare = 0
+
     for _ in range(num_samples):
       self.x_tare += self.x
       self.y_tare += self.y
@@ -50,6 +51,8 @@ class ICM_3D:
     self.x_tare //= num_samples
     self.y_tare //= num_samples
     self.z_tare //= num_samples
+
+    print(f"Calibrated Values: X={self.x_tare:.2f}, Y={self.y_tare:.2f}, Z={self.z_tare:.2f}")
 
   def apply_filter(self, raw_value, history):
     if abs(raw_value) <= self.threshold: raw_value = 0  

@@ -30,4 +30,4 @@ class ICM_3D_I(ICM_3D):
     return self._z_val
 
   def __str__(self):
-    return f"{super().__str__()}| _X={self._x:.2f}, _Y={self._y:.2f}, _Z={self._z:.2f}"
+    return f"{super().__str__()} | _X={self._x:.2f}, _Y={self._y:.2f}, _Z={self._z:.2f}"
