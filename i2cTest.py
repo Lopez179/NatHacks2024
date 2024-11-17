@@ -28,4 +28,4 @@ if __name__ == "__main__":
 
     counter += 1
     time.sleep(sample_rate)
-    if (0x50 < counter): break
+    #if (0x50 < counter): break
