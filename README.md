@@ -41,12 +41,6 @@ By bridging innovative hardware integration and advanced software design, our pr
 
 ---
 
-## **Project Structure**
-├── config.py # Sensor configuration functions ├── reg_func.py # Core I2C register interaction functions ├── ICM_3D.py # Accelerometer data processing ├── ICM_3D_I.py # Extended integration for position tracking ├── DriftCorrector.py # Drift correction class ├── ExtendedKalmanFilter.py # Kalman filter implementation ├── i2cTest.py # Main script for VR interface ├── quick_test.py # WHO_AM_I check for magnetometer ├── scaner_test.py # Additional I2C interaction tests ├── output.py # Predefined movements (e.g., mouse actions) └── PicoStuff/ # Raspberry Pi Pico-related files
-
-
----
-
 ## **Setup and Configuration**
 ### **1. Hardware Setup**
 - Connect the **BioAmp EXG Pill** to the Raspberry Pi Pico for signal acquisition.
