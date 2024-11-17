@@ -26,7 +26,6 @@ class ICM_3D:
 
   @property
   def x(self):
-    #print(f"x : {self.scaler * (read_signed_16(self.bus, self.dev, self.x_h_reg, self.x_l_reg))} | {self.scaler * (read_signed_16(self.bus, self.dev, self.x_h_reg, self.x_l_reg)) - self.x_tare}")
     return self.apply_filter(self.scaler * (read_signed_16(self.bus, self.dev, self.x_h_reg, self.x_l_reg)) - self.x_tare, self.x_hist)
      
   @property
@@ -43,29 +42,29 @@ class ICM_3D:
     self.y_tare = 0
     self.z_tare = 0
 
-    #p_x = 0
-    #p_y = 0
-    #p_z = 0
+    p_x = 0
+    p_y = 0
+    p_z = 0
 
-    #self.x_drift = 0
-    #self.y_drift = 0
-    #self.z_drift = 0
+    self.x_drift = 0
+    self.y_drift = 0
+    self.z_drift = 0
 
     for _ in range(num_samples):
       x = self.scaler * (read_signed_16(self.bus, self.dev, self.x_h_reg, self.x_l_reg))
       self.x_tare += x
-      #self.x_drift += x - p_x
-      #p_x = x
+      self.x_drift += x - p_x
+      p_x = x
 
       y = self.scaler * (read_signed_16(self.bus, self.dev, self.y_h_reg, self.y_l_reg))
       self.y_tare += y
-      #self.y_drift += y - p_y
-      #p_y = y
+      self.y_drift += y - p_y
+      p_y = y
       
       z = self.scaler * (read_signed_16(self.bus, self.dev, self.z_h_reg, self.z_l_reg))
       self.z_tare += z
-      #self.z_drift += z - p_z
-      #p_z = z
+      self.z_drift += z - p_z
+      p_z = z
 
       time.sleep(self.samp_rate)
 
@@ -73,18 +72,20 @@ class ICM_3D:
     self.y_tare //= num_samples
     self.z_tare //= num_samples
 
-    #self.x_drift //= num_samples
-    #self.y_drift //= num_samples
-    #self.z_drift //= num_samples
+    self.x_drift //= num_samples
+    self.y_drift //= num_samples
+    self.z_drift //= num_samples
 
     print(f"Calibrated Tare Values: X={self.x_tare:.2f}, Y={self.y_tare:.2f}, Z={self.z_tare:.2f}")
-    #print(f"Calibrated Drift Values: X={self.x_drift:.2f}, Y={self.y_drift:.2f}, Z={self.z_drift:.2f}")
+    print(f"Calibrated Drift Values: X={self.x_drift:.2f}, Y={self.y_drift:.2f}, Z={self.z_drift:.2f}")
 
   def apply_filter(self, raw_value, history):
     if abs(raw_value) <= self.threshold: raw_value = 0  
-    history.append(raw_value)
 
-    return sum(history) / len(history) if len(history) == self.window else raw_value
+    history.append(raw_value)
+    out = sum(history) / len(history) if len(history) == self.window else raw_value
+
+    return out
 
   def __str__(self):
     return f"X={self.x:.2f}, Y={self.y:.2f}, Z={self.z:.2f}"

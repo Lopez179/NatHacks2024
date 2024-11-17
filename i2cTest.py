@@ -23,9 +23,10 @@ if __name__ == "__main__":
   input()
   counter = 0
   while True:
-    print(f"Accelerometer (g): {accel}")
+    if (counter < 0xe0):
+      print(f"Accelerometer (g): {accel}")
     #print(f"Gyroscope (dps): {gyro}")
 
     counter += 1
     time.sleep(sample_rate)
-    #if (0x50 < counter): break
+    if (0xf0 < counter): break
